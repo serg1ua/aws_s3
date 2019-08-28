@@ -1,0 +1,10 @@
+@layout('layouts')
+
+@section('content')
+<div class="list-group">
+    <li class="list-group-item list-group-item-success"><h4>List of files</h4></li>
+    @each(file in files)
+<a href="/download/{{file.Key}}" class="list-group-item list-group-item-action list-group-item-primary">{{file.Key}} <span style="float:right">size:&nbsp;{{file.Size}}&nbsp;Bytes</span></a>
+    @endeach
+  </div>
+@endsection

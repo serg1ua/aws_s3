@@ -1,0 +1,12 @@
+@layout('layouts')
+
+@section('content')
+
+<div class="list-group">
+    <li class="list-group-item list-group-item-success"><h4>Click for download your file </h4></li>
+    <a target="_blank" rel="noopener noreferrer" href="{{data.url}}" class="list-group-item list-group-item-action list-group-item-primary  mt-3">{{data.filename}}</a>
+        <form action="/delete/{{data.filename}}" method="POST">
+        <button class="btn btn-danger mt-3" type="submit">DELETE FILE</button>
+    </form>
+</div>
+@endsection
