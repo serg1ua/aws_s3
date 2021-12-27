@@ -21,46 +21,45 @@ function getFiles(req, res) {
   s3.listObjects(options)
     .promise()
     .then(data => {
-      return res.render ('index', { files: data.Contents });
+      return res.render('index', { files: data.Contents });
     })
     .catch(error => {
-      return res.render ('error', { error });
+      return res.render('error', { error });
     });
 }
 
 function getFile(req, res) {
   const filename = req.params.filename;
   const params = { Bucket: options.Bucket, Key: filename };
-  s3.getSignedUrl ('getObject', params, (error, url) => {
-    if (error) return res.render ('error', { error });
-    return res.render ('file', {data: { filename, url }});
+  s3.getSignedUrl('getObject', params, (error, url) => {
+    if (error) return res.render('error', { error });
+    return res.render('file', { data: { filename, url } });
   });
 }
 
-function uploadFile (req, res) {
-  if (req.method === 'GET') return res.render ('upload');
+function uploadFile(req, res) {
+  if (req.method === 'GET') return res.render('upload');
   if (req.method === 'POST') {
     if (!req.files) {
-      return res.render('error', { error: {message: 'No file uploaded' }});
+      return res.render('error', { error: { message: 'No file uploaded' } });
     }
     const { name, data } = req.files.file;
     const params = { Bucket: options.Bucket, Key: name, Body: data };
     s3.upload(params, (error, data) => {
-      if(error) return res.render('error', { error });
+      if (error) return res.render('error', { error });
       return res.redirect('/');
     });
   }
 }
 
 function deleteFile(req, res) {
-  console.log(req.params.filename);
   const params = { Bucket: options.Bucket, Key: req.params.filename };
-   s3.deleteObject(params, function(error, data) {
-     if (error) {
-       return res.render('error', { error });
-     }
-     return res.redirect('/');
-   });
+  s3.deleteObject(params, function (error, data) {
+    if (error) {
+      return res.render('error', { error });
+    }
+    return res.redirect('/');
+  });
 }
 
 module.exports = {

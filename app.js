@@ -5,12 +5,15 @@ const logger = require('morgan');
 const fileUpload = require('express-fileupload');
 const expressEdge = require('express-edge');
 const edge = require('edge.js');
-require('dotenv').config();
 const log4js = require('log4js');
-const log = log4js.getLogger();
-log.level = 'debug';
 
-const PORT = process.env.PORT || 3000;
+require('dotenv').config();
+
+const log = log4js.getLogger();
+log.level = process.env.NODE_ENV === 'dev' ? 'debug' : 'error';
+
+
+const PORT = process.env.PORT || 0;
 
 const indexRouter = require('./routes');
 
@@ -37,5 +40,5 @@ app.use(function (req, res, next) {
 });
 
 app.listen(PORT, () => {
-  log.info('Your app is listening on port ' + PORT);
+  log.info(`Your app is listening on port ${PORT}`);
 });
